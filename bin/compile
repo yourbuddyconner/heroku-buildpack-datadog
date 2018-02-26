@@ -42,14 +42,7 @@ for DEP in ${DEP_PKGS[@]}; do
 done
 
 # Make a gpg dirand add the keys
-topic "====== Who am I"
-whoami | indent
-topic "====== Where am I"
-pwd | indent
-topic "====== Where is home"
-echo $HOME | indent
-
-GPG_DIR="~/.gnupg"
+GPG_DIR="$BUILD_DIR/.gnupg"
 GPG_KEYSERVER="hkp://keyserver.ubuntu.com:80"
 GPG_KEY="A2923DFF56EDA6E76E55E492D3A80E30382E94DE"
 
@@ -59,7 +52,7 @@ gpg --keyserver $GPG_KEYSERVER --recv $GPG_KEY | indent
 
 # Install Datadog Agent
 topic "Updating apt caches for Datadog Agent"
-APT_OPTIONS="$APT_OPTIONS -o Dir::Etc::SourceList=$APT_REPO_FILE"
+APT_OPTIONS="$APT_OPTIONS -o Dir::Etc::SourceList=$APT_REPO_FILE --keyring $GPG_DIR/pubring.gpg"
 apt-get $APT_OPTIONS update | indent
 
 topic "Installing Datadog Agent"
