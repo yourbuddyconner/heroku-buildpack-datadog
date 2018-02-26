@@ -54,7 +54,7 @@ GPG_KEYSERVER="hkp://keyserver.ubuntu.com:80"
 GPG_KEY="A2923DFF56EDA6E76E55E492D3A80E30382E94DE"
 
 topic "Adding Datadog GPG keys"
-mkdir -p $GPGDIR
+mkdir -p $GPG_DIR
 gpg --keyserver $GPG_KEYSERVER --recv $GPG_KEY | indent
 
 # Install Datadog Agent
