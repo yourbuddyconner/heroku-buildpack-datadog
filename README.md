@@ -20,9 +20,11 @@ heroku create
 # Add the appropriate language-specific buildpack. For example:
 heroku buildpacks:add heroku/ruby
 
-# Add this buildpack and set your environment variables
+# Enable Heroku Labs Dyno Metadata
+heroku labs:enable runtime-dyno-metadata -a $(heroku apps:info|grep ===|cut -d' ' -f2)
+
+# Add this buildpack and set your Datadog API key
 heroku buildpacks:add --index 1 https://github.com/DataDog/heroku-buildpack-datadog.git
-heroku config:set DD_HOSTNAME=$(heroku apps:info|grep ===|cut -d' ' -f2)
 heroku config:add DD_API_KEY=<your API key>
 
 # Deploy to Heroku
@@ -40,7 +42,7 @@ In addition to the environment variables shown above, there are a number of othe
 | Setting | Description|
 | --- | --- |
 | DD_API_KEY | *Required.* Your API key is available from the [Datadog API integrations](https://app.datadoghq.com/account/settings#api) page. Note that this is the *API* key, not the application key. |
-| DD_HOSTNAME | *Required.* Because Heroku Dynos are ephemeral and your application my be served by any available Dyno resource, you should set the hostname to your application or service name. This will give you more consistent metrics. To view metrics by Dyno hosts, the tag `dynohost` is added by the buildpack. |
+| DD_HOSTNAME | *Deprecated.* **WARNING**: Setting the hostname manually may result in metrics continuity errors. It is recommended that you do not set this variable. Because dyno hosts are ephemeral it is recommended that you monitor based on the tags `dynoname` or `appname`. |
 | DD_TAGS | *Optional.* Sets additional tags provided as a comma-delimited string. For example, `heroku config:set DD_TAGS=simple-tag-0,tag-key-1:tag-value-1`. The buildpack automatically adds the tags `dyno` and `dynohost` which represent the Dyno name (e.g. web.1) and host ID (e.g. ) respectively. See the ["Guide to tagging"](http://docs.datadoghq.com/guides/tagging/) for more information. |
 | DD_HISTOGRAM_PERCENTILES | *Optional.* You can optionally set additional percentiles for your histogram metrics. See [Histogram percentiles](#histogram-percentiles) below for more information. |
 | DISABLE_DATADOG_AGENT | *Optional.* When set, the Datadog agent will not be run. |
