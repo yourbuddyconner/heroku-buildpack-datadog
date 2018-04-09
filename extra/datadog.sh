@@ -76,6 +76,6 @@ else
 
   # Send a StatsD event to mark the dyno host startup.
   EVENT_TITLE="Dyno $DYNO started on host $DYNOHOST"
-  EVEENT_TEXT="See $DYNO's dashboard."
+  EVENT_TEXT="See $DYNO's dashboard."
   echo "_e{${#EVENT_TITLE},${#EVENT_TEXT}}:$EVENT_TITLE|$EVENT_TEXT|#shell,bash" > /dev/udp/localhost/8125
 fi
