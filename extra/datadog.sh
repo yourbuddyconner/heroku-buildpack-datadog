@@ -73,4 +73,9 @@ else
     echo "Starting Datadog Trace Agent on dyno $DYNO"
     bash -c "$DD_DIR/embedded/bin/trace-agent -config $DATADOG_CONF 2>&1 &"
   fi
+
+  # Send a StatsD event to mark the dyno host startup.
+  EVENT_TITLE="Dyno $DYNO started on host $DYNOHOST"
+  EVEENT_TEXT="See $DYNO's dashboard."
+  echo "_e{${#EVENT_TITLE},${#EVENT_TEXT}}:$EVENT_TITLE|$EVENT_TEXT|#shell,bash" > /dev/udp/localhost/8125
 fi
