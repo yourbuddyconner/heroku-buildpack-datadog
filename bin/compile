@@ -76,3 +76,7 @@ topic "Installing Datadog runner"
 mkdir -p $BUILD_DIR/.profile.d
 cp $BUILDPACK_DIR/extra/datadog.sh $BUILD_DIR/.profile.d/
 chmod +x $BUILD_DIR/.profile.d/datadog.sh
+
+topic "Installing process watcher"
+cp $BUILDPACK_DIR/extra/watcher.sh $APT_DIR/usr/bin/
+chmod +x $APT_DIR/usr/bin/watcher.sh

@@ -73,6 +73,7 @@ else
   # Run the Datadog Agent
   echo "Starting Datadog Agent on dyno $DYNO"
   bash -c "PYTHONPATH=$DD_DIR/embedded/lib/python2.7 $DD_BIN_DIR/agent start -c $DATADOG_CONF 2>&1 &"
+  export DD_AGENT_PID=$(pgrep agent)
 
   # The Trace Agent will run by default.
   if [ "$DD_APM_ENABLED" == "false" ]; then
@@ -80,5 +81,9 @@ else
   else
     echo "Starting Datadog Trace Agent on dyno $DYNO"
     bash -c "$DD_DIR/embedded/bin/trace-agent -config $DATADOG_CONF 2>&1 &"
+    export DD_TRACE_AGENT_PID=$(pgrep trace-agent)
   fi
+
+  # Launch the process watcher. This helps prevent the agent from keeping the dyno running.
+  bash -c "$APT_DIR/usr/bin/watcher.sh &"
 fi
