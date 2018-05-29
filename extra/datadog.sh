@@ -17,7 +17,7 @@ export PKG_CONFIG_PATH="$APT_DIR/usr/lib/x86_64-linux-gnu/pkgconfig:$APT_DIR/usr
 
 # Set Datadog configs
 export DD_LOG_FILE="$DD_LOG_DIR/datadog.log"
-export DD_CONF_PATH="$DD_CONF_DIR"
+#export DD_CONF_PATH="$DD_CONF_DIR/conf.d"
 
 # Move Datadog config files into place
 cp $DATADOG_CONF.example $DATADOG_CONF
