@@ -78,7 +78,8 @@ if [ -n "$DISABLE_DATADOG_AGENT" ]; then
 else
   # Run the Datadog Agent
   echo "Starting Datadog Agent on dyno $DYNO"
-  bash -c "PYTHONPATH=$DD_DIR/embedded/lib/python2.7 $DD_BIN_DIR/agent start -c $DATADOG_CONF 2>&1 &"
+  export DD_PYTHONPATH="=$DD_DIR/embedded/lib/python2.7:$DD_DIR/embedded/lib/python2.7/site-packages/datadog_checks"
+  bash -c "PYTHONPATH=$DD_PYTHONPATH $DD_BIN_DIR/agent start -c $DATADOG_CONF 2>&1 &"
 
   # The Trace Agent will run by default.
   if [ "$DD_APM_ENABLED" == "false" ]; then
