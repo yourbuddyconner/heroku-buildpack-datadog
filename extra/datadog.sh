@@ -26,6 +26,11 @@ cp $DATADOG_CONF.example $DATADOG_CONF
 sed -i -e"s|^.*confd_path:.*$|confd_path: $DD_CONF_DIR/conf.d|" $DATADOG_CONF
 sed -i -e"s|^.*additional_checksd:.*$|additional_checksd: $DD_DIR/checks.d|" $DATADOG_CONF
 
+# Disable core system checks
+if [ "$DD_DISABLE_CORE_CHECKS" == "true" ]; then
+  find $DD_CONF_DIR/conf.d -name conf.yaml.default -exec mv {} {}.disbled \;
+fi
+
 # Include application's datadog configs
 APP_DATADOG_CONF_DIR="/app/datadog/conf.d"
 
