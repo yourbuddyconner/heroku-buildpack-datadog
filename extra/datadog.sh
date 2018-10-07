@@ -46,6 +46,11 @@ if [ -n "$HEROKU_APP_NAME" ]; then
   TAGS="$TAGS\n  - appname:$HEROKU_APP_NAME"
 fi
 
+# Enable the Process Agent configs.
+if [ "$DD_PROCESS_AGENT" == "true" ]; then
+  sed -i -e"s|^# process_config:$|process_config:\n    enabled: $DD_PROCESS_AGENT|" $DATADOG_CONF
+fi
+
 # Convert comma delimited tags from env vars to yaml
 if [ -n "$DD_TAGS" ]; then
   DD_TAGS=$(sed "s/,[ ]\?/\\\n  - /g" <<< $DD_TAGS)
