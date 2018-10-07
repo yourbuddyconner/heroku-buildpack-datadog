@@ -47,7 +47,7 @@ if [ -n "$HEROKU_APP_NAME" ]; then
 fi
 
 # Enable the Process Agent configs.
-if [ "$DD_PROCESS_AGENT" == "true" ]; then
+if [ -n "$DD_PROCESS_AGENT" ]; then
   sed -i -e"s|^# process_config:$|process_config:\n    enabled: $DD_PROCESS_AGENT|" $DATADOG_CONF
 fi
 
